@@ -42,8 +42,9 @@ const server = http.createServer((req, res) => {
       req.on("end", () => {
         const { username, password } = JSON.parse(body);
         try {
-          addUser(username, password);
+
           const token = generateToken(username);
+          addUser(username, password);
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ token }));
         } catch (err) {

@@ -1,7 +1,6 @@
 const fs = require("fs");
 const path = require("path");
 const usersPath = path.join(__dirname, "..", "users.json");
-
 const dataPath = path.join(__dirname, "..", "data.json");
 
 function readData() {

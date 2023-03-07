@@ -4,10 +4,13 @@ const jwt = require("jsonwebtoken");
 const secretKey = "my_secret_key";
 
 // 生成 token 的函数
-function generateToken(payload, expiresIn = "1h") {
+function generateToken(payload, expiresIn = 60*60) {
   console.log(payload, "expiresIn");
   if (!payload) {
     throw new Error("payload");
+  }
+  if (typeof payload === 'string') {
+    payload = { data: payload };
   }
   return jwt.sign(payload, secretKey, { expiresIn });
 }
