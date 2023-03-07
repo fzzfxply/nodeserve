@@ -18,7 +18,7 @@ fetch('http://localhost:3000/api/data', {
     'Authorization': `Bearer  你登录的token`
   },
 })
-
+建议用postman 请求接口比较稳一点
  ```
 可使用接口
 - [x] 登录接口
