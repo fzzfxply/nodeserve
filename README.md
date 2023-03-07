@@ -4,6 +4,21 @@
  node ./server.js
  
  举例 api 如果要注册的话使用http://localhost:3000/api/register
+ {
+  用户名  "username": "user1",
+  密码    "password": "password1"
+}
+
+如果在直接请求data报错TypeError: res.status is not a function
+可以尝试在浏览器控制台输入
+fetch('http://localhost:3000/api/data', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+    'Authorization': `Bearer  你登录的token`
+  },
+})
+
  ```
 可使用接口
 - [x] 登录接口
@@ -72,8 +87,7 @@ URL: /api/data/:id
  - data.json
  - users.json
 - routes/
-  - dataRoutes.js
-  - authRoutes.js
+  - dataRoutes.js 
 - controllers/
   - dataController.js
   - authController.js

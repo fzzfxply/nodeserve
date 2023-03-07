@@ -1,18 +1,13 @@
 const Router = require("./Router");
-const {
-  getDataById,
-  addData,
-  updateData,
-  deleteData,
-  getDataByUser,
-} = require("../controllers/dataController");
-const { authenticateToken } = require("../utils/jwt.js");
+const dataController = require("../controllers/dataController");
+const { authenticateToken } = require("../utils/jwt");
 
 const dataRouter = new Router();
 
-dataRouter.get("/api/data/:id", authenticateToken, (req, res) => {
+// GET single data by ID
+dataRouter.get("/api/data/:id", authenticateToken, (req, res, next) => {
   const id = req.params.id;
-  const data = getDataById(id);
+  const data = dataController.getDataById(id);
   if (data) {
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(data));
@@ -20,30 +15,36 @@ dataRouter.get("/api/data/:id", authenticateToken, (req, res) => {
     res.statusCode = 404;
     res.end(`Data with ID ${id} not found.`);
   }
+  next();
 });
-// // 增加
-dataRouter.post("/api/data", authenticateToken, (req, res) => {
+
+
+
+// POST new data
+dataRouter.post("/api/data", authenticateToken, (req, res, next) => {
   let body = "";
   req.on("data", (chunk) => {
     body += chunk.toString();
   });
   req.on("end", () => {
     const newData = JSON.parse(body);
-    const data = addData(newData);
+    const data = dataController.addData(newData);
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(data));
   });
+  next();
 });
-// 查询所有
-dataRouter.get("/api/data", authenticateToken, (req, res) => {
-  console.log("getData request received"); // 在控制台输出调试信息
-  const data = getDataByUser(req.user.username);
+// GET all data
+dataRouter.get("/api/data", authenticateToken, (req, res, next) => {
+
+  const data = dataController.getDataByUser(req.user.username);
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(data));
+  console.log("调用");
+  next();
 });
-
-// 修改
-dataRouter.put("/api/data/:id", authenticateToken, (req, res) => {
+// PUT update data by ID
+dataRouter.put("/api/data/:id", authenticateToken, (req, res, next) => {
   const id = req.params.id;
   let body = "";
   req.on("data", (chunk) => {
@@ -51,7 +52,7 @@ dataRouter.put("/api/data/:id", authenticateToken, (req, res) => {
   });
   req.on("end", () => {
     const newData = JSON.parse(body);
-    const data = updateData(id, newData);
+    const data = dataController.updateData(id, newData);
     if (data) {
       res.setHeader("Content-Type", "application/json");
       res.end(JSON.stringify(data));
@@ -60,11 +61,13 @@ dataRouter.put("/api/data/:id", authenticateToken, (req, res) => {
       res.end(`Data with ID ${id} not found.`);
     }
   });
+  next();
 });
 
-dataRouter.delete("/api/data/:id", authenticateToken, (req, res) => {
+// DELETE data by ID
+dataRouter.delete("/api/data/:id", authenticateToken, (req, res, next) => {
   const id = req.params.id;
-  const data = deleteData(id);
+  const data = dataController.deleteData(id);
   if (data) {
     res.setHeader("Content-Type", "application/json");
     res.end(JSON.stringify(data));
@@ -72,6 +75,7 @@ dataRouter.delete("/api/data/:id", authenticateToken, (req, res) => {
     res.statusCode = 404;
     res.end(`Data with ID ${id} not found.`);
   }
+  next();
 });
 
 module.exports = dataRouter;

@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 
-const dataPath = path.join(__dirname, "..", "data", "data.json");
+const dataPath = path.join(__dirname, "..", "data.json");
 
 function readData() {
   try {
@@ -41,6 +41,7 @@ function updateData(id, newData) {
   return null;
 }
 function getDataByUser(username) {
+  console.log(username,"username")
   return readData().filter((item) => item.user === username);
 }
 function deleteData(id) {

@@ -85,7 +85,7 @@ const server = http.createServer((req, res) => {
       res.end("Method not allowed");
     }
   } else if (/^\/api\/data(\/(\w+))*$/.test(reqUrl.pathname)) {
-    console.log("1");
+
     // 匹配 /api/data 和 /api/data/:id
     dataRouter.handle(req, res);
   } else {
