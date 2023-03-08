@@ -19,7 +19,6 @@ function addUser(username, password) {
   if (!username || !password) {
     throw new Error("Username and password are required.");
   }
-  console.log(usersPath)
   const users = JSON.parse(fs.readFileSync(usersPath));
   const exists = users.find((user) => user.username === username);
   if (exists) {

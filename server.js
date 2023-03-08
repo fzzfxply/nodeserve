@@ -70,7 +70,7 @@ const server = http.createServer((req, res) => {
       req.on("end", () => {
         const { username, password } = JSON.parse(body);
         const getToken = login(username, password);
-        console.log('111111',getToken)
+
         if (getToken) {
           res.setHeader("Content-Type", "application/json");
           res.end(JSON.stringify({ getToken }));
@@ -85,12 +85,10 @@ const server = http.createServer((req, res) => {
       res.end("Method not allowed");
     }
   } else if (/^\/api\/data(\/.*)?$/.test(reqUrl.pathname)) {
+ // 匹配 /api/data 和 /api/data/:id
 
-    // 匹配 /api/data 和 /api/data/:id
-    console.log(11)
     dataRouter.handle(req, res);
   } else {
-    console.log(22,reqUrl.pathname)
     res.statusCode = 404;
     res.end("Not found");
   }

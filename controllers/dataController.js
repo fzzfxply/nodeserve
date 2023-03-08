@@ -19,7 +19,6 @@ function writeData(data) {
 
 function getDataById(id) {
   const data = readData();
-  console.log(data,"readData",id)
   return data.find((item) => item.id === id);
 }
 
@@ -42,7 +41,6 @@ function updateData(id, newData) {
   return null;
 }
 function getDataByUser(username) {
-  console.log(username,"username")
   return readData().filter((item) => item.user === username);
 }
 function deleteData(id) {

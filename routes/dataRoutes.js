@@ -42,7 +42,6 @@ dataRouter.get("/api/data", authenticateToken, (req, res, next) => {
   const data = dataController.getDataByUser(req.user.username);
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(data));
-  console.log("调用");
   next();
 });
 // PUT update data by ID

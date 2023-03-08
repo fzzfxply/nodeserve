@@ -4,7 +4,6 @@ class Router {
   }
 
   get(path, ...handlers) {
-    console.log(path,"path")
     this.routes[path] = {
       method: "GET",
       handlers,
@@ -62,10 +61,9 @@ class Router {
 
     const matchedRoute = routes.find(route => {
       const pattern = new RegExp(`^${route.replace(/:\w+/g, '(\\d+)')}$`);
-      console.log(pattern.test(url), this.routes[route].method,"matchedRoute",method)
+
       return pattern.test(url) && this.routes[route].method === method;
     });
-console.log(matchedRoute)
     if (!matchedRoute) {
       res.statusCode = 404;
       res.end("Not Found");
