@@ -30,11 +30,7 @@ const server = http.createServer((req, res) => {
 
   // 路由分发
   if (reqUrl.pathname.startsWith("/api/register")) {
-
-
     if (method === "POST") {
-
-
       let body = "";
       req.on("data", (chunk) => {
         body += chunk.toString();

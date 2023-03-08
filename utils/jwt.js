@@ -28,19 +28,24 @@ function verifyToken(token) {
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-
-  if (!token) {
-    return res.status(401).json({ error: "Unauthorized" });
+  try {
+    if (!token) {
+      return res.status(401).json({ error: "Unauthorized" });
+    }
+    jwt.verify(token, secretKey, (err, user) => {
+      if (err) {
+        return res.status(403).json({ error: "Forbidden" });
+      }
+      console.log(next,"next")
+      req.user = user;
+      next(); // 在这里调用next函数
+    });
+  }catch (e){
+    console.log(e)
   }
 
-  jwt.verify(token, secretKey, (err, user) => {
-    if (err) {
-      return res.status(403).json({ error: "Forbidden" });
-    }
-    console.log(next,"next")
-    req.user = user;
-    next(); // 在这里调用next函数
-  });
+
+
 }
 
 module.exports = { generateToken, verifyToken, authenticateToken };
