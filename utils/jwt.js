@@ -41,7 +41,7 @@ function authenticateToken(req, res, next) {
       next(); // 在这里调用next函数
     });
   }catch (e){
-    console.log(e)
+    console.error(e)
   }
 
 
