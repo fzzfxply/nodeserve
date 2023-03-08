@@ -28,8 +28,7 @@ function verifyToken(token) {
 function authenticateToken(req, res, next) {
   const authHeader = req.headers["authorization"];
   const token = authHeader && authHeader.split(" ")[1];
-  console.log(req.headers.authorization, "token");
-  console.log(next, "token2");
+
   if (!token) {
     return res.status(401).json({ error: "Unauthorized" });
   }
@@ -38,6 +37,7 @@ function authenticateToken(req, res, next) {
     if (err) {
       return res.status(403).json({ error: "Forbidden" });
     }
+    console.log(next,"next")
     req.user = user;
     next(); // 在这里调用next函数
   });

@@ -4,6 +4,7 @@ class Router {
   }
 
   get(path, ...handlers) {
+    console.log(path,"path")
     this.routes[path] = {
       method: "GET",
       handlers,
@@ -21,6 +22,7 @@ class Router {
     this.routes[path] = {
       method: "PUT",
       handlers,
+
     };
   }
 
@@ -31,20 +33,48 @@ class Router {
     };
   }
 
+  // handle(req, res) {
+  //   const { url, method } = req;
+  //   const route = this.routes[url];
+  //
+  //   if (!route || route.method !== method) {
+  //     res.statusCode = 404;
+  //     res.end("Not Found");
+  //     return;
+  //   }
+  //
+  //   const handlers = route.handlers;
+  //
+  //   let idx = 0;
+  //   const next = () => {
+  //     idx++;
+  //     if (idx < handlers.length) {
+  //       handlers[idx](req, res, next);
+  //     }
+  //   };
+  //
+  //   handlers[idx](req, res, next);
+  // }
   handle(req, res) {
+    req.params={};
     const { url, method } = req;
-    const route = this.routes[url];
-console.log(this.routes,"route",method)
-    if (!route || route.method !== method) {
+    const routes = Object.keys(this.routes);
+
+    const matchedRoute = routes.find(route => {
+      const pattern = new RegExp(`^${route.replace(/:\w+/g, '(\\d+)')}$`);
+      console.log(pattern.test(url), this.routes[route].method,"matchedRoute",method)
+      return pattern.test(url) && this.routes[route].method === method;
+    });
+console.log(matchedRoute)
+    if (!matchedRoute) {
       res.statusCode = 404;
       res.end("Not Found");
       return;
     }
 
-    const handlers = route.handlers;
+    const { handlers } = this.routes[matchedRoute];
 
     let idx = 0;
-
     const next = () => {
       idx++;
       if (idx < handlers.length) {
@@ -52,8 +82,13 @@ console.log(this.routes,"route",method)
       }
     };
 
+    const pattern = new RegExp(`^${matchedRoute.replace(/:\w+/g, '(\\d+)')}$`);
+
+    const params = pattern.exec(url).slice(1);
+    req.params["id"]  = params[0];
     handlers[idx](req, res, next);
   }
+
 }
 
 module.exports = Router;

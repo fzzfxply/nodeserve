@@ -84,12 +84,13 @@ const server = http.createServer((req, res) => {
       res.statusCode = 405;
       res.end("Method not allowed");
     }
-  } else if (/^\/api\/data(\/(\w+))*$/.test(reqUrl.pathname)) {
+  } else if (/^\/api\/data(\/.*)?$/.test(reqUrl.pathname)) {
 
     // 匹配 /api/data 和 /api/data/:id
+    console.log(11)
     dataRouter.handle(req, res);
   } else {
-
+    console.log(22,reqUrl.pathname)
     res.statusCode = 404;
     res.end("Not found");
   }

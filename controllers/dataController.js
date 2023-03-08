@@ -19,6 +19,7 @@ function writeData(data) {
 
 function getDataById(id) {
   const data = readData();
+  console.log(data,"readData",id)
   return data.find((item) => item.id === id);
 }
 
