@@ -36,16 +36,12 @@ function authenticateToken(req, res, next) {
       if (err) {
         return res.status(403).json({ error: "Forbidden" });
       }
-      console.log(next,"next")
       req.user = user;
       next(); // 在这里调用next函数
     });
   }catch (e){
     console.error(e)
   }
-
-
-
 }
 
-module.exports = { generateToken, verifyToken, authenticateToken };
+module.exports = { generateToken, authenticateToken };

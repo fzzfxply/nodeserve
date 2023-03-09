@@ -6,7 +6,6 @@ const dataRouter = new Router();
 
 // GET single data by ID
 dataRouter.get("/api/data/:id", authenticateToken, (req, res, next) => {
-
   const id = req.params.id;
   const data = dataController.getDataById(id);
 
@@ -19,8 +18,6 @@ dataRouter.get("/api/data/:id", authenticateToken, (req, res, next) => {
   }
   next();
 });
-
-
 
 // POST new data
 dataRouter.post("/api/data/adddata", authenticateToken, (req, res, next) => {
@@ -38,7 +35,7 @@ dataRouter.post("/api/data/adddata", authenticateToken, (req, res, next) => {
 });
 // GET all data
 dataRouter.get("/api/data", authenticateToken, (req, res, next) => {
-
+  console.log(2222222222222);
   const data = dataController.getDataByUser(req.user.username);
   res.setHeader("Content-Type", "application/json");
   res.end(JSON.stringify(data));
@@ -66,17 +63,21 @@ dataRouter.put("/api/data/:putid", authenticateToken, (req, res, next) => {
 });
 
 // 删除id
-dataRouter.delete("/api/data/:deleteid", authenticateToken, (req, res, next) => {
-  const id = req.params.id;
-  const data = dataController.deleteData(id);
-  if (data) {
-    res.setHeader("Content-Type", "application/json");
-    res.end(JSON.stringify(data));
-  } else {
-    res.statusCode = 404;
-    res.end(`Data with ID ${id} not found.`);
+dataRouter.delete(
+  "/api/data/:deleteid",
+  authenticateToken,
+  (req, res, next) => {
+    const id = req.params.id;
+    const data = dataController.deleteData(id);
+    if (data) {
+      res.setHeader("Content-Type", "application/json");
+      res.end(JSON.stringify(data));
+    } else {
+      res.statusCode = 404;
+      res.end(`Data with ID ${id} not found.`);
+    }
+    next();
   }
-  next();
-});
+);
 
 module.exports = dataRouter;

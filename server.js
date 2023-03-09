@@ -1,6 +1,7 @@
 const http = require("http");
 const url = require("url");
 const { generateToken } = require("./utils/jwt");
+
 const dataRouter = require("./routes/dataRoutes.js");
 
 const { addUser, login } = require("./controllers/authController.js");
@@ -38,7 +39,6 @@ const server = http.createServer((req, res) => {
       req.on("end", () => {
         const { username, password } = JSON.parse(body);
         try {
-
           const token = generateToken(username);
           addUser(username, password);
           res.setHeader("Content-Type", "application/json");
@@ -49,16 +49,11 @@ const server = http.createServer((req, res) => {
         }
       });
     } else {
-
-
       res.statusCode = 405;
       res.end("Method not allowed");
     }
   } else if (reqUrl.pathname.startsWith("/api/login")) {
-
-
     if (method === "POST") {
-
       let body = "";
       req.on("data", (chunk) => {
         body += chunk.toString();
@@ -76,16 +71,14 @@ const server = http.createServer((req, res) => {
         }
       });
     } else {
-
       res.statusCode = 405;
       res.end("Method not allowed");
     }
   } else if (/^\/api\/data(\/.*)?$/.test(reqUrl.pathname)) {
- // 匹配 /api/data 和 /api/data/:id
-
+    // 匹配 /api/data 和 /api/data/:id
     dataRouter.handle(req, res);
   } else {
-    res.statusCode = 404;
+    res.statusCode = 405;
     res.end("Not found");
   }
   //   dataRouter.handle(req, res);
